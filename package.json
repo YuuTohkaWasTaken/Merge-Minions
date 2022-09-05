@@ -4,7 +4,7 @@
   "description": "A game about developing minions, fending off monsters, and surviving the night",
   "main": "index.js",
   "scripts": {
-    "test": "webpack && webpack-dev-server --port 8080"
+    "test": "webpack && webpack-dev-server --port 5173"
   },
   "repository": {
     "type": "git",

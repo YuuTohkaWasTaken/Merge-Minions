@@ -17,7 +17,7 @@ class App {
         var scene = new Scene(engine);
 
         // creating camera
-        var camera: ArcRotateCamera = new ArcRotateCamera("Camera", Math.PI / 2, Math.PI / 2, 150, Vector3.Zero(), scene);
+        var camera: ArcRotateCamera = new ArcRotateCamera("Camera", Math.PI / 2, Math.PI / 2, 140, Vector3.Zero(), scene);
         camera.attachControl(canvas, true);
         camera.lowerBetaLimit = -Infinity;
         camera.upperBetaLimit = Infinity;

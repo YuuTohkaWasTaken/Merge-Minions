@@ -17,7 +17,7 @@ class App {
         var scene = new Scene(engine);
 
         // creating camera
-        var camera: ArcRotateCamera = new ArcRotateCamera("Camera", Math.PI / 2, Math.PI / 2, 5, Vector3.Zero(), scene);
+        var camera: ArcRotateCamera = new ArcRotateCamera("Camera", Math.PI / 2, Math.PI / 2, 150, Vector3.Zero(), scene);
         camera.attachControl(canvas, true);
         camera.lowerBetaLimit = -Infinity;
         camera.upperBetaLimit = Infinity;
@@ -26,7 +26,7 @@ class App {
         var light1: HemisphericLight = new HemisphericLight("light1", new Vector3(0, 1, 0), scene);
 
         // ship
-        SceneLoader.ImportMesh("", "https://raw.githubusercontent.com/YuuTohkaWasTaken/Merge-Minions/public/main/", "ship.obj", scene);
+        SceneLoader.ImportMesh("", "https://raw.githubusercontent.com/YuuTohkaWasTaken/Merge-Minions/main/public/", "ship.obj", scene);
 
         // hide/show the Inspector
         window.addEventListener("keydown", (ev) => {

@@ -21,6 +21,7 @@ class App {
         camera.attachControl(canvas, true);
         camera.lowerBetaLimit = -Infinity;
         camera.upperBetaLimit = Infinity;
+        camera.lowerRadiusLimit = 25;
         
         // creating light
         var light1: HemisphericLight = new HemisphericLight("light1", new Vector3(0, 1, 0), scene);

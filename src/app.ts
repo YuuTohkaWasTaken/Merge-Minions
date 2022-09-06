@@ -1,8 +1,8 @@
 import "@babylonjs/core/Debug/debugLayer";
 import "@babylonjs/inspector";
 import "@babylonjs/loaders/glTF";
-import { Engine, Scene, ArcRotateCamera, Vector3, HemisphericLight, Mesh, MeshBuilder, SceneLoader, PointLight, StandardMaterial, Color3 } from "@babylonjs/core";
-import { GridMaterial } from '@babylonjs/materials';
+import { Engine, Scene, ArcRotateCamera, Vector3, HemisphericLight, Mesh, MeshBuilder, SceneLoader, PointLight, StandardMaterial, Color3, AmmoJSPlugin, PhysicsImpostor, OimoJSPlugin, CannonJSPlugin } from "@babylonjs/core";
+import * as CANNON from 'cannon';
 
 class App {
     constructor() {
@@ -20,34 +20,12 @@ class App {
         // creating camera
         var camera: ArcRotateCamera = new ArcRotateCamera("Camera", 0, Math.PI / 4, 3, new Vector3(0, 1, 0), scene);
         camera.attachControl(canvas, true);
-        camera.upperBetaLimit = Math.PI/2;
-        camera.lowerBetaLimit = 0;
-        camera.upperRadiusLimit = 4;
-        camera.lowerRadiusLimit = 4;
         
         // creating light
         var light: PointLight = new PointLight("light1", new Vector3(1000, 1000, 0), scene);
 
-        // creating terrain
-        var ground: Mesh = MeshBuilder.CreateGround("ground", { width: 100, height: 100 }, scene);
-
-        var groundColor = new GridMaterial("grid")
-        groundColor.majorUnitFrequency = 50;
-        groundColor.majorUnitFrequency = 1;
-        groundColor.mainColor = Color3.Green();
-        ground.material = groundColor;
-        ground.position.y = 0.1;
-
-        // creating water (border)
-        var water: Mesh = MeshBuilder.CreateGround("water", { width: 10000, height: 10000 }, scene);
-        var waterColor = new StandardMaterial("groundcolor");
-        waterColor.diffuseColor = Color3.Blue();
-        water.material = waterColor;
-
-        // adding player
-        var player: Mesh = MeshBuilder.CreateCapsule("BEAN", {height: 1}, scene);
-        player.position.y = 0.6;
-        player.position.x = Math.random() //CONTINUE
+        // creating ground
+        var ground: Mesh = MeshBuilder.CreateGround("ground", { width: 10, height: 10 }, scene);
 
         // hide/show the Inspector
         window.addEventListener("keydown", (ev) => {

@@ -1,8 +1,8 @@
 import "@babylonjs/core/Debug/debugLayer";
 import "@babylonjs/inspector";
 import "@babylonjs/loaders/glTF";
-import { Engine, Scene, ArcRotateCamera, Vector3, HemisphericLight, Mesh, MeshBuilder, SceneLoader, PointLight, StandardMaterial, Color3, AmmoJSPlugin, PhysicsImpostor, OimoJSPlugin, CannonJSPlugin } from "@babylonjs/core";
-import * as CANNON from 'cannon';
+import { Engine, Scene, ArcRotateCamera, Vector3, HemisphericLight, MeshBuilder, Mesh, Color3 } from "@babylonjs/core";
+
 
 class App {
     constructor() {
@@ -13,35 +13,51 @@ class App {
         canvas.id = "gameCanvas";
         document.body.appendChild(canvas);
 
-        // initialize babylon scene and engine
+        // defining default engine and scenes
         var engine = new Engine(canvas, true);
-        var scene = new Scene(engine);
+        var lvlEditScene = new Scene(engine); // level editor
+        var lvlTestScene = new Scene(engine); // level test
+        var lvlPlayScene = new Scene(engine); // level play
 
-        // creating camera
-        var camera: ArcRotateCamera = new ArcRotateCamera("Camera", 0, Math.PI / 4, 3, new Vector3(0, 1, 0), scene);
+        // creating level editor
+        /*
+        todo:
+            1) add rectangle builder 
+            2) add buttons
+            3) add portals
+            4) add wind
+            5) add improper shapes
+            6) create default level creator *CURRENT
+        */
+
+        // adding camera
+        var camera: ArcRotateCamera = new ArcRotateCamera("Camera", 0, Math.PI / 4, 3, new Vector3(0, 0, 0), lvlEditScene);
         camera.attachControl(canvas, true);
         
-        // creating light
-        var light: PointLight = new PointLight("light1", new Vector3(1000, 1000, 0), scene);
+        // adding ambient light to the level editor
+        var ambientLight: HemisphericLight = new HemisphericLight("ambient light", new Vector3(0, 0, 0), lvlEditScene);
+        ambientLight.specular = new Color3(0, 0, 0);
 
-        // creating ground
-        var ground: Mesh = MeshBuilder.CreateGround("ground", { width: 10, height: 10 }, scene);
+        // adding player mesh
+
+        // current level content
+        var level
 
         // hide/show the Inspector
         window.addEventListener("keydown", (ev) => {
             // Shift+Ctrl+Alt+I
             if (ev.shiftKey && ev.ctrlKey && ev.altKey && ev.keyCode === 73) {
-                if (scene.debugLayer.isVisible()) {
-                    scene.debugLayer.hide();
+                if (lvlEditScene.debugLayer.isVisible()) {
+                    lvlEditScene.debugLayer.hide();
                 } else {
-                    scene.debugLayer.show();
+                    lvlEditScene.debugLayer.show();
                 }
             }
         });
 
         // run the main render loop
         engine.runRenderLoop(() => {
-            scene.render();
+            lvlEditScene.render();
         });
     }
 }

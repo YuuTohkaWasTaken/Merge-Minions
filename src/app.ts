@@ -1,7 +1,7 @@
 import "@babylonjs/core/Debug/debugLayer";
 import "@babylonjs/inspector";
 import "@babylonjs/loaders/glTF";
-import { Engine, Scene, ArcRotateCamera, Vector3, HemisphericLight, MeshBuilder, Mesh, Color3 } from "@babylonjs/core";
+import { Engine, Scene, ArcRotateCamera, Vector3, HemisphericLight, MeshBuilder, Mesh, Color3, StandardMaterial } from "@babylonjs/core";
 
 
 class App {
@@ -38,10 +38,41 @@ class App {
         var ambientLight: HemisphericLight = new HemisphericLight("ambient light", new Vector3(0, 0, 0), lvlEditScene);
         ambientLight.specular = new Color3(0, 0, 0);
 
-        // adding player mesh
+        // adding player summoner mesh
+        var playerSummoner: Mesh = MeshBuilder.CreateCapsule("player", { height: 2 }, lvlEditScene);
+        var playerSummonerColor = new StandardMaterial("color", lvlEditScene);
+        playerSummonerColor.diffuseColor = Color3.Blue();
+        playerSummoner.material = playerSummonerColor;
+        playerSummoner.material.alpha = 0.5;
 
         // current level content
-        var level
+        var level = {
+            contents: ["player", "starterFloor"],
+            player: {
+                position: new Vector3(0, 1, 0),
+                gravity: {
+                    x: 0,
+                    y: -1,
+                    z: 0
+                },
+                velocities: {
+                    x: 0,
+                    y: 0,
+                    z: 0
+                },
+            },
+            starterFloor: {
+                position: {
+                    top: Vector3.Zero(),
+                    bottom: new Vector3(0, -1, 0)
+                },
+                material: {
+                    type: "color",
+                    materialParameters: Color3.Gray()
+                },
+                type: "ground"
+            }
+        }
 
         // hide/show the Inspector
         window.addEventListener("keydown", (ev) => {

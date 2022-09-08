@@ -1,7 +1,7 @@
 import "@babylonjs/core/Debug/debugLayer";
 import "@babylonjs/inspector";
 import "@babylonjs/loaders/glTF";
-import { Engine, Scene, ArcRotateCamera, Vector3, HemisphericLight, MeshBuilder, Mesh, Color3, StandardMaterial } from "@babylonjs/core";
+import { Engine, Scene, ArcRotateCamera, Vector3, HemisphericLight, MeshBuilder, Mesh, Color3, StandardMaterial, UniversalCamera } from "@babylonjs/core";
 
 
 class App {
@@ -22,34 +22,40 @@ class App {
         // creating level editor
         /*
         todo:
-            1) add rectangle builder 
+            1) add shape builder *CURRENT
             2) add buttons
             3) add portals
             4) add wind
             5) add improper shapes
-            6) create default level creator *CURRENT
+            6) add gravity walls
         */
 
         // adding camera
-        var camera: ArcRotateCamera = new ArcRotateCamera("Camera", 0, Math.PI / 4, 3, new Vector3(0, 0, 0), lvlEditScene);
-        camera.attachControl(canvas, true);
+        var lvlEditorCam: UniversalCamera = new UniversalCamera("camera", new Vector3(0, 3, -3), lvlEditScene);
+        lvlEditorCam.attachControl(canvas, true);
+        lvlEditorCam.target = Vector3.Zero();
         
         // adding ambient light to the level editor
         var ambientLight: HemisphericLight = new HemisphericLight("ambient light", new Vector3(0, 0, 0), lvlEditScene);
         ambientLight.specular = new Color3(0, 0, 0);
 
         // adding player summoner mesh
-        var playerSummoner: Mesh = MeshBuilder.CreateCapsule("player", { height: 2 }, lvlEditScene);
+        var playerSummoner: Mesh = MeshBuilder.CreateCapsule("player", { height: 1 }, lvlEditScene);
+        playerSummoner.position.y = 0.5;
         var playerSummonerColor = new StandardMaterial("color", lvlEditScene);
         playerSummonerColor.diffuseColor = Color3.Blue();
         playerSummoner.material = playerSummonerColor;
         playerSummoner.material.alpha = 0.5;
 
+        // adding starter floor
+        var starterFloor: Mesh = MeshBuilder.CreateBox("floor", {height: 1, width: 3, depth: 3}, lvlEditScene);
+        starterFloor.position.y = -0.5;
+
         // current level content
         var level = {
             contents: ["player", "starterFloor"],
             player: {
-                position: new Vector3(0, 1, 0),
+                position: new Vector3(0, 0.5, 0),
                 gravity: {
                     x: 0,
                     y: -1,
@@ -62,27 +68,24 @@ class App {
                 },
             },
             starterFloor: {
-                position: {
-                    top: Vector3.Zero(),
-                    bottom: new Vector3(0, -1, 0)
-                },
+                position: new Vector3(0, -0.5, 0),
                 material: {
                     type: "color",
                     materialParameters: Color3.Gray()
+                },
+                dimensions: {
+                    width: 3,
+                    height: 1,
+                    depth: 3
                 },
                 type: "ground"
             }
         }
 
-        // hide/show the Inspector
+        // camera movement, level editing, etc.
         window.addEventListener("keydown", (ev) => {
-            // Shift+Ctrl+Alt+I
-            if (ev.shiftKey && ev.ctrlKey && ev.altKey && ev.keyCode === 73) {
-                if (lvlEditScene.debugLayer.isVisible()) {
-                    lvlEditScene.debugLayer.hide();
-                } else {
-                    lvlEditScene.debugLayer.show();
-                }
+            if (ev.key == "w") {
+                
             }
         });
 
